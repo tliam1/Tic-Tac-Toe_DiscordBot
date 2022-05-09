@@ -39,7 +39,7 @@ async def on_message(message):
     print(len(user_message))
 
     if user_message == "!help" and message.channel.name == 'tictactoe' and message.author != client.user:
-        await message.channel.send(f'Proper Test From {username}')
+        await message.channel.send(f'Type coordinates using !x,y')
 
     if len(user_message) != 4 or user_message[0] != '!' or not user_message[1].isdigit() or \
             not user_message[3].isdigit() or int(user_message[1]) < 1 or int(user_message[1]) > 3 \
