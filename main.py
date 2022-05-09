@@ -16,9 +16,7 @@ tiles = [' ', ' ', ' ',
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    message = f"```   1       2      3\n1 {tiles[0]}\t| {tiles[1]}\t| {tiles[2]}"\
-              f"\t\n_____________________\n2 {tiles[3]}\t| {tiles[4]}\t| {tiles[5]}"\
-              f"\t\n_____________________\n3 {tiles[6]}\t| {tiles[7]}\t| {tiles[8]}\t```"
+    message = f"```{getTurn()}\n{printBoard()}```"
     text_channel_list = []
     for server in client.guilds:
         for channel in server.channels:
@@ -55,15 +53,10 @@ async def on_message(message):
     checkIfPositionIsTaken(boardPosition)
 
     if checkWinCondition() or checkDrawCondition():  # the game is over and you need to reset board
-        gameOverText = resetBoard()
-        await message.channel.send(f"```{gameOverText}\n\n\n   1       2      3\n1 {tiles[0]}\t| {tiles[1]}\t| {tiles[2]}"
-                                   f"\t\n_____________________\n2 {tiles[3]}\t| {tiles[4]}\t| {tiles[5]}"
-                                   f"\t\n_____________________\n3 {tiles[6]}\t| {tiles[7]}\t| {tiles[8]}\t```")
+        await message.channel.send(f"```{printBoard()}\n {resetBoard()}\n\n\n```")
 
     #  we are now able to send something to the user (This ends the event)
-    await message.channel.send(f"```   1       2      3\n1 {tiles[0]}\t| {tiles[1]}\t| {tiles[2]}"
-                               f"\t\n_____________________\n2 {tiles[3]}\t| {tiles[4]}\t| {tiles[5]}"
-                               f"\t\n_____________________\n3 {tiles[6]}\t| {tiles[7]}\t| {tiles[8]}\t```")
+    await message.channel.send(f"```{getTurn()}\n{printBoard()}```")
 
 
 # checks if tile is taken, if not place an x or o there depending on the turn
@@ -99,7 +92,7 @@ def checkWinCondition():
         tiles[2:7:2]
         ]
     assert all(len(line) == 3 for line in lines)  # program fails if any line indexes have length > 3
-    if any(filled_with_Xs(line) or filled_with_Xs(line) for line in lines):  # Line = lines[i] (or tiles[x:x])
+    if any(filled_with_Xs(line) or filled_with_Os(line) for line in lines):  # Line = lines[i] (or tiles[x:x])
         return True
 # The any() function returns True if any element of an iterable is True. If not, it returns False.
 
@@ -119,18 +112,38 @@ def checkDrawCondition():
     return True
 
 def resetBoard():
+    # Game Over printing
+    if checkDrawCondition():
+        gameOverText = "GAME OVER! DRAW!"
+        # refresh the screen, board, and tiles if I want a gameplay loop
+    elif isXTurn:
+        gameOverText = "GAME OVER O Wins"
+    else:
+        gameOverText = "GAME OVER X Wins"
     # reset the board variables
     for i in range(len(tiles)):
         tiles[i] = ' '
-        board[i] = [i, False]
-    # Game Over printing
-    if checkDrawCondition():
-        return "GAME OVER! DRAW!"
-        # refresh the screen, board, and tiles if I want a gameplay loop
-    elif isXTurn:
-        return "GAME OVER O Wins"
+    for i in range(len(board)):
+        board[i][2] = False
+        print(board)
+    # board[i] = [i, False]
+
+    listOfGlobals = globals()  # only way to assign new values to "Undetermined value" globals
+    listOfGlobals['isXTurn'] = True  # resetting first player
+    return gameOverText
+
+
+def printBoard():
+    boardText = f"   1       2      3\n1 {tiles[0]}\t| {tiles[1]}\t| {tiles[2]}"\
+                f"\t\n_____________________\n2 {tiles[3]}\t| {tiles[4]}\t| {tiles[5]}"\
+                f"\t\n_____________________\n3 {tiles[6]}\t| {tiles[7]}\t| {tiles[8]}\t"
+    return boardText
+
+def getTurn():
+    if isXTurn:
+        return "X's Turn"
     else:
-        return "GAME OVER X Wins"
+        return "O's Turn"
 
 
 client.run(TOKEN)
