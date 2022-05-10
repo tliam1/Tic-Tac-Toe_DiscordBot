@@ -13,8 +13,8 @@ tiles = [' ', ' ', ' ',
          ' ', ' ', ' ',
          ' ', ' ', ' ']
 players = ["", ""]
+playerIDs = [0, 0]
 timeSinceLastPlay = 0
-
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -46,20 +46,22 @@ async def on_message(message):
                                    f'you can end the game/queue with !r\n\n```')
 
     if user_message == "!r" and message.channel.name == 'tictactoe' and message.author != client.user:
-        await message.channel.send(f"{checkTime()}")
+        await message.channel.send(f"```{checkTime()}```")
 
     if user_message == "!p" and message.channel.name == 'tictactoe' and message.author != client.user:
         if players[0] == "":
             players[0] = username
+            playerIDs[0] = message.author.id
             listOfGlobals = globals()  # only way to assign new values to "Undetermined value" globals
             listOfGlobals['timeSinceLastPlay'] = time.time()  # starts the timer for queue and game length
             await message.channel.send(f'```{username}, you are X, waiting on O```')
             return
         elif players[1] == "" and username != players[0]:
             players[1] = username
+            playerIDs[1] = message.author.id
             listOfGlobals = globals()  # only way to assign new values to "Undetermined value" globals
             listOfGlobals['timeSinceLastPlay'] = time.time()  # resets the queue reset timer when game actually starts
-            await message.channel.send(f"```{username}, you are O.\n\n@{players[1]} @{players[0]}\nYour game can now be played\n\n{getTurn()}\n{printBoard()}```")
+            await message.channel.send(f"```{username}, you are O.\n\n```" + f"<@{playerIDs[0]}> <@{playerIDs[1]}>" + f"```\nYour game can now be played\n\n{getTurn()}\n{printBoard()}```")
 
     if len(user_message) != 4 or user_message[0] != '!' or not user_message[1].isdigit() or \
             not user_message[3].isdigit() or int(user_message[1]) < 1 or int(user_message[1]) > 3 \
