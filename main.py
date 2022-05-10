@@ -137,14 +137,14 @@ def checkDrawCondition():
 def resetBoard():
     # Game Over printing
     if checkDrawCondition():
-        gameOverText = "```GAME OVER! DRAW!```"
+        gameOverText = "GAME OVER! DRAW!"
         # refresh the screen, board, and tiles if I want a gameplay loop
     elif isXTurn and checkWinCondition():
-        gameOverText = "```GAME OVER O Wins```"
+        gameOverText = "GAME OVER O Wins"
     elif not isXTurn and checkWinCondition():
-        gameOverText = "```GAME OVER X Wins```"
+        gameOverText = "GAME OVER X Wins"
     else:
-        gameOverText = f"```Restarting Game...\n\n Type !p To Start A New Game!```"
+        gameOverText = f"Restarting Game...\n\n Type !p To Start A New Game!"
     # reset the board variables
     for i in range(len(tiles)):
         tiles[i] = ' '
@@ -179,10 +179,10 @@ def checkTime():
     returnText = ""
     if listOfGlobals['timeSinceLastPlay'] == 0:
         returnText = "No Currently Active Game\n"
-    elif abs(listOfGlobals['timeSinceLastPlay'] - time.time()) < 120:
-        returnText = f"Time Till Game Ends: {round(120 - (abs(listOfGlobals['timeSinceLastPlay'] - time.time())), 1)} " \
+    elif abs(listOfGlobals['timeSinceLastPlay'] - time.time()) < 180:
+        returnText = f"Time Till Game Ends: {round(180 - (abs(listOfGlobals['timeSinceLastPlay'] - time.time())), 1)} " \
                      f"seconds\nActive Players:\nX's: {players[0]}\nO's: {players[1]}\n"
-    elif abs(listOfGlobals['timeSinceLastPlay'] - time.time()) > 120:
+    elif abs(listOfGlobals['timeSinceLastPlay'] - time.time()) > 180:
         returnText = f"{resetBoard()}"
 
     return returnText
