@@ -1,6 +1,5 @@
 import discord
 import time
-from time import sleep
 TOKEN = 'OTczMDg1MjI2NTM4NTIwNTg3.GRUbFl.3HoTV2kLiYMbjL8xQYZqz3VS2GlT1UBVkxAdM4'
 
 client = discord.Client()
