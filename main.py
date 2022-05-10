@@ -59,7 +59,7 @@ async def on_message(message):
             players[1] = username
             listOfGlobals = globals()  # only way to assign new values to "Undetermined value" globals
             listOfGlobals['timeSinceLastPlay'] = time.time()  # resets the queue reset timer when game actually starts
-            await message.channel.send(f"```{username}, you are O. Game can now be played\n\n{getTurn()}\n{printBoard()}```")
+            await message.channel.send(f"```{username}, you are O.\n\n@{players[1]} @{players[0]}\nYour game can now be played\n\n{getTurn()}\n{printBoard()}```")
 
     if len(user_message) != 4 or user_message[0] != '!' or not user_message[1].isdigit() or \
             not user_message[3].isdigit() or int(user_message[1]) < 1 or int(user_message[1]) > 3 \
