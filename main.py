@@ -59,7 +59,7 @@ async def on_message(message):
             players[1] = username
             listOfGlobals = globals()  # only way to assign new values to "Undetermined value" globals
             listOfGlobals['timeSinceLastPlay'] = time.time()  # resets the queue reset timer when game actually starts
-            await message.channel.send(f"```{username}, you are O. Game can now be played\n\n{getTurn(players[0])}\n{printBoard()}```")
+            await message.channel.send(f"```{username}, you are O. Game can now be played\n\n{getTurn()}\n{printBoard()}```")
 
     if len(user_message) != 4 or user_message[0] != '!' or not user_message[1].isdigit() or \
             not user_message[3].isdigit() or int(user_message[1]) < 1 or int(user_message[1]) > 3 \
@@ -79,7 +79,7 @@ async def on_message(message):
         return
 
     #  we are now able to send something to the user (This ends the event)
-    await message.channel.send(f"```{getTurn(username)}\n\n{printBoard()}```")
+    await message.channel.send(f"```{getTurn()}\n\n{printBoard()}```")
 
 
 # checks if tile is taken, if not place an x or o there depending on the turn
@@ -156,6 +156,8 @@ def resetBoard():
         print(players[i])
     listOfGlobals = globals()  # only way to assign new values to "Undetermined value" globals
     listOfGlobals['isXTurn'] = True  # resetting first player
+    listOfGlobals = globals()  # only way to assign new values to "Undetermined value" globals
+    listOfGlobals['timeSinceLastPlay'] = 0
     return gameOverText
 
 
@@ -165,9 +167,10 @@ def printBoard():
                 f"\t\n_____________________\n3 {tiles[6]}\t| {tiles[7]}\t| {tiles[8]}\t"
     return boardText
 
-def getTurn(usernameStr):
-    print(usernameStr)
-    return f"{usernameStr}'s Turn"
+def getTurn():
+    if not isXTurn:
+        return f"{players[1]}'s Turn"
+    return f"{players[0]}'s Turn"
 
 def checkUsernameMatch(username):
     if (username == players[0] and isXTurn) or (username == players[1] and not isXTurn):
