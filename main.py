@@ -140,13 +140,14 @@ def checkDrawCondition():
 
 def resetBoard():
     # Game Over printing
-    if checkDrawCondition():
-        gameOverText = "GAME OVER! DRAW!"
-        # refresh the screen, board, and tiles if I want a gameplay loop
-    elif isXTurn and checkWinCondition():
+
+    # refresh the screen, board, and tiles if I want a gameplay loop
+    if isXTurn and checkWinCondition():
         gameOverText = f"GAME OVER {players[1]} Wins"
     elif not isXTurn and checkWinCondition():
         gameOverText = f"GAME OVER {players[0]} Wins"
+    elif checkDrawCondition():
+        gameOverText = "GAME OVER! DRAW!"
     else:
         gameOverText = f"Restarting Game...\n\n Type !p To Start A New Game!"
     # reset the board variables
