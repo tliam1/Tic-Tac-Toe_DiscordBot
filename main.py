@@ -17,14 +17,15 @@ timeSinceLastPlay = 0
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
-    message = f"```Type !p to to join a queue or !help for more info!\n\n\n```{printBoard()}"
-    text_channel_list = []
-    for server in client.guilds:
-        for channel in server.channels:
-            if str(channel.name) == 'tictactoe':
-                text_channel_list.append(channel)
 
-    await text_channel_list[0].send(message)
+    # message = f"```Type !p to to join a queue or !help for more info!\n\n\n```{printBoard()}"
+    # text_channel_list = []
+    # for server in client.guilds:
+    #     for channel in server.channels:
+    #         if str(channel.name) == 'tictactoe':
+    #             text_channel_list.append(channel)
+    #
+    # await text_channel_list[0].send(message)
 
 
 # @client.event(discord.reaction)
